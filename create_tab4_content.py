@@ -105,7 +105,7 @@ def create_tab4_content(self):
     # ====== Tab4 事件處理方法（最小化實現，避免錯誤）=====
 
 
-def _on_schedule_mode_changed(self, event=None):
+#def _on_schedule_mode_changed(self, event=None):
     # 還未建立 #
 
 
@@ -113,10 +113,7 @@ def add_processing_rule(self):
     """新增一個處理原則 - 修正編號生成邏輯版"""
     # 檢查是否已達到64個原則的限制
     if len(self.processing_rules) >= 64:
-        messagebox.showwarning(
-            "達到限制",
-            "已達到最大處理原則數量 (64個)。\n請刪除不必要的原則後再新增。",
-        )
+        messagebox.showwarning("達到限制", "已達到最大處理原則數量 (64個)。\n請刪除不必要的原則後再新增。", )
         return
 
     # 【修正核心】先將當前編號儲存到一個變數中，供本規則所有地方使用
@@ -309,16 +306,12 @@ def edit_selected_rule(self):
             return
 
         if not re.match(r"^\d+x\d+$", resolution_var.get().strip()):
-            messagebox.showerror(
-                "錯誤", "解析度格式錯誤，請使用 寬x高 格式，如: 800x600"
-            )
+            messagebox.showerror("錯誤", "解析度格式錯誤，請使用 寬x高 格式，如: 800x600")
             return
 
         # 更新規則數據
         rule_data["name"] = name_var.get().strip()
-        rule_data["source_path"] = (
-            source_path_var.get().strip()
-        )  # 現在是完整檔案路徑
+        rule_data["source_path"] = source_path_var.get().strip()
         rule_data["output_path"] = output_path_var.get().strip()
         rule_data["backup_path"] = backup_path_var.get().strip()
         rule_data["resolution"] = resolution_var.get().strip()
@@ -329,12 +322,10 @@ def edit_selected_rule(self):
         edit_window.destroy()
         self.log_message(f"已更新處理原則 #{rule_id_num}: {rule_data['name']}")
 
-    ttk.Button(button_frame, text="儲存變更", command=save_changes, width=12).pack(
-        side=tk.LEFT, padx=5
-    )
-    ttk.Button(
-        button_frame, text="取消", command=edit_window.destroy, width=12
-    ).pack(side=tk.LEFT, padx=5)
+    ttk.Button(button_frame, text="儲存變更", command=save_changes,
+               width=12).pack(side=tk.LEFT, padx=5)
+    ttk.Button(button_frame, text="取消", command=edit_window.destroy,
+               width=12).pack(side=tk.LEFT, padx=5)
     self.save_tab4_config()
 
     # 配置網格權重
@@ -992,3 +983,13 @@ def load_tab4_config(self):
         )
     except Exception as e:
         self.log_message(f"載入設定檔時發生未知錯誤: {e}", level="ERROR")
+
+
+def _get_tab4_column_widths(self):
+    """ 獲取TAB4規則列表Treeview當前的欄位寬度 """
+    if not hasattr(self, "rule_tree"):
+        return {}
+    widths = {}
+    for col in self.rule_tree["columns"]:
+        widths[col] = self.rule_tree.column(col, "width")
+    return widths
