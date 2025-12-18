@@ -105,10 +105,6 @@ def create_tab4_content(self):
     # ====== Tab4 事件處理方法（最小化實現，避免錯誤）=====
 
 
-#def _on_schedule_mode_changed(self, event=None):
-    # 還未建立 #
-
-
 def add_processing_rule(self):
     """新增一個處理原則 - 修正編號生成邏輯版"""
     # 檢查是否已達到64個原則的限制
@@ -519,15 +515,6 @@ def stop_global_timer(self):
         self.global_timer_id = None
         self.timer_status_var.set("狀態: 定時器已停止")
         self.log_message("全局定時器已停止")
-
-
-def _on_global_timer(self):
-
-
-def _reschedule_timer(self):
-
-
-def _check_specific_minute(self):
 
 
 def manual_process_cycle(self):

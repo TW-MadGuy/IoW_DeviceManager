@@ -6,6 +6,7 @@ from tkinter import messagebox
 
 from utils import format_rtu_id, normalize_uuid, validate_uuid
 
+
 def create_normal_operation(self):
     """創建正常模式的操作區域"""
     # 正常模式的框架
@@ -406,7 +407,7 @@ def clear_edit_inputs(self):
         self.type_var.set("")
 
     if hasattr(self, "enable_var"):
-
+        self.enable_var.set(True)
 
 def show_normal_operation(self):
     """顯示正常模式的操作區域"""
@@ -449,6 +450,7 @@ def show_edit_operation(self, mode="edit", values=None):
     # 顯示編輯模式框架
     self.edit_op_frame.pack(fill=tk.X, expand=True)
     self.ui_mode = mode
+
 
 def save_config(self):
     """儲存設定到INI檔案 - 更新為新的欄位順序"""
@@ -646,6 +648,3 @@ def load_config(self):
 
     except Exception as e:
         self.log(f"載入設定時發生錯誤: {str(e)}")
-
-
-

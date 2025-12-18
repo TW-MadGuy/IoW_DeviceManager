@@ -1,6 +1,4 @@
 from device_manager import show_normal_operation
-
-
 import tkinter as tk
 from tkinter import ttk
 

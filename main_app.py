@@ -1,13 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext, Menu, filedialog, messagebox
-import uuid
-import configparser
 import os
-import re
-from datetime import datetime, timedelta  # 修改：增加timedelta
-import time  # 新增：用于time.sleep
+from datetime import datetime  # 修改：增加timedelta
 import threading  # 新增：用于线程安全
-import hashlib  # 用于计算文件哈希值
 from PIL import Image  # 确保PIL（Pillow库）已导入，用于图片处理
 import create_tab1_content
 import create_tab2_content
@@ -15,12 +10,10 @@ import create_tab3_content
 import create_tab4_content
 from device_manager import (
     clear_edit_inputs,
-    create_edit_operation,
     load_config,
     save_config,
     show_normal_operation,
 )
-from utils import calculate_file_hash, format_rtu_id
 
 class BatchLikeApp:
     def __init__(self, root):
@@ -628,15 +621,6 @@ class BatchLikeApp:
         self.log_ui_buffer.clear()
         self.pending_ui_update = False
 
-
-        def _get_tab4_column_widths(self):
-        """ 獲取TAB4規則列表Treeview當前的欄位寬度 """
-        if not hasattr(self, "rule_tree"):
-            return {}
-        widths = {}
-        for col in self.rule_tree["columns"]:
-            widths[col] = self.rule_tree.column(col, "width")
-        return widths
 
     def on_timer_interval_changed(self, event=None):
         """ 當定時器間隔輸入框內容改變且失去焦點時，更新變數並儲存設定。"""
