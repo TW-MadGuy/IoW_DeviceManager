@@ -112,6 +112,28 @@ class Tab4Backup(ctk.CTkFrame):
                 "V" if r.get("enabled") else "-"
             ))
 
+    def handle_engine_report(self, rid, error_type):
+        """
+        [新函式] 當背景引擎發現錯誤時，必須呼叫此處！
+        error_type: "broken", "no_upd", "lost"
+        """
+        # (1) 同步更新「小帳本」(讓畫面會動)
+        if rid in self.session_errors:
+            if error_type == "broken": self.session_errors[rid]["broken"] += 1
+            elif error_type == "no_upd": self.session_errors[rid]["no_upd"] += 1
+            elif error_type == "lost": self.session_errors[rid]["lost"] += 1
+
+        # (2) 同步更新「歷史存摺」(讓 JSON 紀錄歷史)
+        for r in self.rules_data:
+            if r.get("id") == rid:
+                field_name = f"count_{error_type.replace('no_upd', 'no_update').replace('lost', 'missing')}"
+                r[field_name] = r.get(field_name, 0) + 1
+                break
+        
+        # (3) 立即刷新畫面與存檔
+        self._refresh_tree()
+        self.config_mgr.save_config(self.rules_data)
+
     def _on_double_click(self, event):
         selected = self.tree.selection()
         if not selected:
