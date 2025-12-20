@@ -14,8 +14,7 @@ class MainApp(ctk.CTk):
         self.title("IoW 設備與檔案管理器 (重構版)")
         self.geometry("800x600")
 
-        # 2. 上方功能分頁 (Tabview)
-        # 設定高度 400，留下方 200 給 Log 視窗
+        # 3. 上方功能分頁 (Tabview)
         self.tabview = ctk.CTkTabview(self, width=780, height=380)
         self.tabview.pack(padx=10, pady=5, fill="both", expand=True)
 
@@ -24,16 +23,22 @@ class MainApp(ctk.CTk):
         self.tab3 = self.tabview.add("預留 (Tab3)")
         self.tab4 = self.tabview.add("檔案備份 (Tab4)")
 
-        # 3. 下方 RAM Log 視窗
-        self.log_label = ctk.CTkLabel(
-            self, text="系統執行紀錄 (RAM LOG):", anchor="w")
+        # 4. [修正處] 下方 RAM Log 視窗 (先建立 Logger，因為 Tab4 需要用到它)
+        self.log_label = ctk.CTkLabel(self, text="系統執行紀錄 (RAM LOG):", anchor="w")
         self.log_label.pack(padx=15, pady=(5, 0), fill="x")
 
-        # 實例化您剛才建立的 RAMLogger，設定最大 2000 行
+        # 正確的初始化：傳入 self 作為 master
         self.logger = RAMLogger(self, max_lines=2000, height=150)
         self.logger.pack(padx=10, pady=(0, 10), fill="x")
 
-        # 4. 初始化背景任務與分頁內容
+        # 5. [關鍵順序] 有了 logger 之後，再建立 Tab4 的內容
+        self.tab4_content = Tab4Backup(master=self.tab4, logger=self.logger)
+        self.tab4_content.pack(fill="both", expand=True)
+
+        # 6. 建立引用供引擎使用
+        self.tab4_ref = self.tab4_content
+
+        # 7. 初始化背景任務與分頁內容
         self.init_tabs()
 
         # 測試一下 Log 功能
