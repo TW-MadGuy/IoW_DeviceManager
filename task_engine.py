@@ -149,3 +149,30 @@ class TaskEngine:
         
         # 掃描完後，叫 UI 更新畫面
         self.ui.after(0, self.ui._refresh_tree)
+
+    def check_file(self, rule):
+        rid = rule.get("id")
+        base_path = rule.get("location")
+        file_name = rule.get("source_filename")
+        
+        # 1. 自動識別副檔名 (錨點：支援 PNG/JPG)
+        # 如果使用者寫 filename.jpg 但實際是 .png，或者反之
+        exts = ['', '.jpg', '.png', '.JPG', '.PNG']
+        target_path = None
+        for ext in exts:
+            temp_path = os.path.join(base_path, file_name + ext if not file_name.endswith(ext) else file_name)
+            if os.path.exists(temp_path):
+                target_path = temp_path
+                break
+
+        if not target_path:
+            # 沒找到檔案 -> 呼叫回報 "lost"
+            self.main_app.tab4.update_status(rid, "遺失", "lost")
+            return
+
+        # 2. 檢查檔案是否損壞 (模擬邏輯)
+        if os.path.getsize(target_path) == 0:
+            self.main_app.tab4.update_status(rid, "損壞", "broken")
+        else:
+            self.main_app.tab4.update_status(rid, "正常")
+
