@@ -8,12 +8,22 @@
         "target_x": 800,
         "target_y": 600,
         "count_broken": 0,
-        "count_no_update": 19,
+        "count_no_update": 6,
         "count_missing": 0,
         "last_hash": "bb9d22b1f2cdc5ce12dde13b1277ea9d",
         "enabled": true,
         "status": "異常",
-        "restore_dir": "R:/目的地"
+        "restore_dir": "R:/目的地",
+        "ui_widths": {
+            "id": 76,
+            "loc": 151,
+            "file": 178,
+            "status": 74,
+            "broken": 76,
+            "no_upd": 63,
+            "lost": 64,
+            "enable": 64
+        }
     },
     {
         "id": 2,
@@ -24,7 +34,7 @@
         "target_x": 800,
         "target_y": 600,
         "count_broken": 0,
-        "count_no_update": 2,
+        "count_no_update": 6,
         "count_missing": 0,
         "last_hash": "edfb15e372b2483753e9dc2a1c01b7eb",
         "enabled": true,
@@ -40,12 +50,12 @@
         "target_x": 800,
         "target_y": 600,
         "count_broken": 0,
-        "count_no_update": 0,
+        "count_no_update": 6,
         "count_missing": 0,
-        "last_hash": "",
+        "last_hash": "d03abb5614ee63d94cf8bcd89e27589b",
         "enabled": true,
         "restore_dir": "R:/目的地",
-        "status": "正常"
+        "status": "異常"
     },
     {
         "id": 4,
