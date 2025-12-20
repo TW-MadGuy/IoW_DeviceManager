@@ -112,6 +112,25 @@ class Tab4Backup(ctk.CTkFrame):
                 "V" if r.get("enabled") else "-"
             ))
 
+    def update_status(self, rid, status, error_type=None):
+        """[錨點] 接收引擎回報的狀態與錯誤"""
+        for r in self.rules_data:
+            if r.get("id") == rid:
+                r["status"] = status
+                # 如果有錯誤類型，同時更新「小帳本」與「歷史存摺」
+                if error_type and rid in self.session_errors:
+                    # 更新介面小帳本 (session_errors)
+                    if error_type == "broken": self.session_errors[rid]["broken"] += 1
+                    elif error_type == "no_upd": self.session_errors[rid]["no_upd"] += 1
+                    elif error_type == "lost": self.session_errors[rid]["lost"] += 1
+                    
+                    # 更新歷史存摺 (rules_data)
+                    field_map = {"broken": "count_broken", "no_upd": "count_no_update", "lost": "count_missing"}
+                    target_field = field_map.get(error_type)
+                    r[target_field] = r.get(target_field, 0) + 1
+                break
+        self._refresh_tree()
+
     def handle_engine_report(self, rid, error_type):
         """
         [新函式] 當背景引擎發現錯誤時，必須呼叫此處！
