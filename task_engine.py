@@ -165,14 +165,22 @@ class TaskEngine:
                 target_path = temp_path
                 break
 
-        if not target_path:
-            # 沒找到檔案 -> 呼叫回報 "lost"
-            self.main_app.tab4.update_status(rid, "遺失", "lost")
-            return
+        # 將原本的 self.main_app.tab4 改為：
+        #if hasattr(self.main_app, 'tab4_ref'):
+        #    self.main_app.tab4_ref.update_status(rid, "遺失", "lost")
+        #return
 
         # 2. 檢查檔案是否損壞 (模擬邏輯)
         if os.path.getsize(target_path) == 0:
             self.main_app.tab4.update_status(rid, "損壞", "broken")
         else:
             self.main_app.tab4.update_status(rid, "正常")
+        
+        # 假設你判定檔案遺失了
+        if not os.path.exists(target_path):
+        # [精確跳線]：呼叫 Tab4 的接收端，並傳入對應的錯誤類型
+            if hasattr(self.main_app, 'tab4_ref'):
+            # 傳入 "lost" 會讓計數器的「遺失」欄位 +1
+                self.main_app.tab4_ref.update_status(rid, "遺失", "lost")
+
 
